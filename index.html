@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher 24 - Akash's Classroom</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 30px;
+            padding: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        /* হেডার সেকশন */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .left-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .bookmark-icon {
+            font-size: 28px;
+            cursor: pointer;
+            color: #667eea;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .bookmark-icon:hover {
+            transform: scale(1.1);
+            color: #764ba2;
+        }
+        
+        .bookmark-badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: #ff4444;
+            color: white;
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 50%;
+            display: none;
+        }
+        
+        .bookmark-badge.active {
+            display: block;
+        }
+        
+        .digital-clock {
+            background: #333;
+            color: #00ff00;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 10px rgba(255,215,0,0.3);
+            text-align: center;
+            line-height: 1.3;
+        }
+        
+        .clock-time {
+            font-size: 20px;
+        }
+        
+        .clock-date {
+            font-size: 12px;
+            color: #ffd700;
+            margin-top: 2px;
+        }
+        
+        .right-header {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .calculator-icon-header {
+            font-size: 28px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+            transition: all 0.3s;
+        }
+        
+        .calculator-icon-header:hover {
+            transform: scale(1.1);
+        }
+        
+        .three-line-menu {
+            font-size: 30px;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        
+        .three-line-menu:hover {
+            background: #f0f0f0;
+        }
+        
+        /* ড্রপডাউন মেনু */
+        .dropdown-menu {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 220px;
+            display: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .dropdown-menu.active {
+            display: block;
+        }
+        
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .menu-item:hover {
+            background: #f5f5f5;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .teacher-badge {
+            text-align: center;
+            color: #667eea;
+            font-size: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        
+        #blackboard {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 30px;
+            min-height: 250px;
+            border-radius: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            border: 4px solid #ffd700;
+            box-shadow: inset 0 0 20px rgba(0,255,0,0.3);
+            margin-bottom: 20px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            transition: all 0.3s;
+        }
+        
+        #blackboard.blurred {
+            filter: blur(3px);
+            opacity: 0.5;
+        }
+        
+        .input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .camera-btn {
+            font-size: 24px;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .camera-options {
+            position: absolute;
+            bottom: 60px;
+            left: 0;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 180px;
+            display: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+        
+        .camera-options.active {
+            display: block;
+        }
+        
+        .camera-option {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .camera-option:hover {
+            background: #f5f5f5;
+        }
+        
+        .camera-option:last-child {
+            border-bottom: none;
+        }
+        
+        .input-row input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background: white;
+            border-radius: 40px;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .mic-btn {
+            font-size: 24px;
+            cursor: pointer;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            color: white;
+            border-radius: 50%;
+        }
+        
+        .mic-btn.listening {
+            background: #ff4444;
+            animation: pulse 0.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .send-btn {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .image-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f0f8ff;
+            border-radius: 15px;
+            border: 2px solid #667eea;
+        }
+        
+        .image-preview img {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        
+        .remove-image {
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: auto;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* বুকমার্ক প্যানেল */
+        .bookmark-panel {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.2);
+            transition: left 0.3s ease;
+            z-index: 1500;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .bookmark-panel.active {
+            left: 0;
+        }
+        
+        .bookmark-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .clear-bookmarks {
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .clear-bookmarks:hover {
+            background: #ffe0e0;
+        }
+        
+        .bookmark-item {
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid #667eea;
+        }
+        
+        .bookmark-item:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+        
+        .bookmark-time {
+            font-size: 11px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* ক্যালকুলেটর মডাল */
+        .calculator-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .calculator-modal.active {
+            display: flex;
+        }
+        
+        .calculator {
+            background: white;
+            border-radius: 30px;
+            padding: 25px;
+            width: 350px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            animation: popIn 0.3s ease;
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .calculator-display {
+            background: #333;
+            color: #00ff00;
+            font-size: 36px;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: right;
+            margin-bottom: 20px;
+            font-family: 'Courier New', monospace;
+            border: 2px solid #ffd700;
+        }
+        
+        .calculator-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .calc-btn {
+            padding: 20px;
+            font-size: 20px;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        
+        .calc-btn:hover {
+            background: #e0e0e0;
+            transform: scale(0.95);
+        }
+        
+        .calc-btn.operator {
+            background: #667eea;
+            color: white;
+        }
+        
+        .calc-btn.equals {
+            background: #28a745;
+            color: white;
+            grid-column: span 2;
+        }
+        
+        .calc-btn.clear {
+            background: #ff4444;
+            color: white;
+        }
+        
+        .close-calc {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .close-calc button {
+            padding: 10px 30px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        /* ক্যামেরা মডাল */
+        .camera-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            flex-direction: column;
+        }
+        
+        .camera-modal.active {
+            display: flex;
+        }
+        
+        .camera-modal video {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 20px;
+            margin: 20px;
+        }
+        
+        .camera-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .cam-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            min-width: 120px;
+        }
+        
+        .capture-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .switch-btn {
+            background: #667eea;
+            color: white;
+        }
+        
+        .close-cam-btn {
+            background: #ff4444;
+            color: white;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- হেডার -->
+        <div class="header">
+            <div class="left-header">
+                <div class="bookmark-icon" id="bookmarkBtn" title="Bookmark">
+                    🔖
+                    <span class="bookmark-badge" id="bookmarkBadge">0</span>
+                </div>
+                <div class="digital-clock" id="clock">
+                    <div class="clock-time" id="clockTime">12:00:00 AM</div>
+                    <div class="clock-date" id="clockDate">Monday, 01 Jan 2024</div>
+                </div>
+            </div>
+            <div class="right-header">
+                <div class="calculator-icon-header" id="calculatorIcon" title="Calculator">🧮</div>
+                <div class="three-line-menu" id="menuBtn">☰</div>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <div class="menu-item" onclick="alert('Student Details - Coming Soon')">
+                        📋 Student Details
+                    </div>
+                    <div class="menu-item" onclick="alert('Message Teacher 24 - Coming Soon')">
+                        💬 Message Teacher 24
+                    </div>
+                    <div class="menu-item" onclick="alert('Subscription - Coming Soon')">
+                        💰 Subscription
+                    </div>
+                    <div class="menu-item" onclick="logout()">
+                        🚪 Logout
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="teacher-badge">👨‍🏫 Teacher 24</div>
+        <h1>📚 Akash's Classroom</h1>
+
+        <div id="blackboard">
+            🤖 Teacher 24 is waiting for your question...
+        </div>
+
+        <div id="imagePreview" class="image-preview" style="display: none;">
+            <img id="previewImg" src="" alt="Preview">
+            <span>Image ready</span>
+            <span class="remove-image" onclick="removeImage()">❌</span>
+        </div>
+
+        <div class="input-row">
+            <div class="camera-btn" id="cameraBtn" title="Add Photo">📷</div>
+            <div class="camera-options" id="cameraOptions">
+                <div class="camera-option" onclick="openCamera()">
+                    📸 Take Photo
+                </div>
+                <div class="camera-option" onclick="openGallery()">
+                    🖼️ Choose from Gallery
+                </div>
+            </div>
+            
+            <input type="text" id="questionInput" placeholder="Type your question here..." autocomplete="off">
+            <div class="mic-btn" id="voiceInputBtn" title="Speak">🎤</div>
+            <button class="send-btn" id="askBtn">Send</button>
+        </div>
+        
+        <input type="file" id="fileInput" accept="image/*">
+        
+        <div class="footer">
+            🚀 Teacher 24
+        </div>
+    </div>
+
+    <!-- বুকমার্ক প্যানেল -->
+    <div class="bookmark-panel" id="bookmarkPanel">
+        <div class="bookmark-header">
+            <h3>📖 My Bookmarks</h3>
+            <div class="clear-bookmarks" onclick="clearAllBookmarks()">Clear All</div>
+        </div>
+        <div id="bookmarkList">
+            <div class="bookmark-item">Loading bookmarks...</div>
+        </div>
+    </div>
+
+    <!-- ক্যালকুলেটর মডাল -->
+    <div class="calculator-modal" id="calculatorModal">
+        <div class="calculator">
+            <div class="calculator-display" id="calcDisplay">0</div>
+            <div class="calculator-buttons">
+                <button class="calc-btn clear" onclick="clearCalc()">C</button>
+                <button class="calc-btn" onclick="appendToCalc('(')">(</button>
+                <button class="calc-btn" onclick="appendToCalc(')')">)</button>
+                <button class="calc-btn operator" onclick="appendToCalc('/')">÷</button>
+                
+                <button class="calc-btn" onclick="appendToCalc('7')">7</button>
+                <button class="calc-btn" onclick="appendToCalc('8')">8</button>
+                <button class="calc-btn" onclick="appendToCalc('9')">9</button>
+                <button class="calc-btn operator" onclick="appendToCalc('*')">×</button>
+                
+                <button class="calc-btn" onclick="appendToCalc('4')">4</button>
+                <button class="calc-btn" onclick="appendToCalc('5')">5</button>
+                <button class="calc-btn" onclick="appendToCalc('6')">6</button>
+                <button class="calc-btn operator" onclick="appendToCalc('-')">−</button>
+                
+                <button class="calc-btn" onclick="appendToCalc('1')">1</button>
+                <button class="calc-btn" onclick="appendToCalc('2')">2</button>
+                <button class="calc-btn" onclick="appendToCalc('3')">3</button>
+                <button class="calc-btn operator" onclick="appendToCalc('+')">+</button>
+                
+                <button class="calc-btn" onclick="appendToCalc('0')">0</button>
+                <button class="calc-btn" onclick="appendToCalc('.')">.</button>
+                <button class="calc-btn equals" colspan="2" onclick="calculateResult()">=</button>
+            </div>
+            <div class="close-calc">
+                <button onclick="closeCalculator()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ক্যামেরা মডাল -->
+    <div class="camera-modal" id="cameraModal">
+        <video id="video" autoplay playsinline></video>
+        <div class="camera-controls">
+            <button class="cam-btn switch-btn" onclick="switchCamera()">🔄 Switch</button>
+            <button class="cam-btn capture-btn" onclick="captureImage()">📸 Capture</button>
+            <button class="cam-btn close-cam-btn" onclick="closeCameraModal()">❌ Close</button>
+        </div>
+    </div>
+
+    <script>
+        const GROQ_API_KEY = "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";
+        
+        const blackboard = document.getElementById('blackboard');
+        const questionInput = document.getElementById('questionInput');
+        const askBtn = document.getElementById('askBtn');
+        const voiceInputBtn = document.getElementById('voiceInputBtn');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = document.getElementById('previewImg');
+        const bookmarkBadge = document.getElementById('bookmarkBadge');
+
+        // Local Storage থেকে বুকমার্ক লোড
+        let bookmarks = JSON.parse(localStorage.getItem('teacher24_bookmarks')) || [];
+        
+        function updateBookmarkCount() {
+            bookmarkBadge.innerText = bookmarks.length;
+            if (bookmarks.length > 0) {
+                bookmarkBadge.classList.add('active');
+            } else {
+                bookmarkBadge.classList.remove('active');
+            }
+        }
+        
+        function updateBookmarkList() {
+            const list = document.getElementById('bookmarkList');
+            if (bookmarks.length === 0) {
+                list.innerHTML = '<div class="bookmark-item">No bookmarks yet</div>';
+            } else {
+                list.innerHTML = bookmarks.slice().reverse().map((b, index) => `
+                    <div class="bookmark-item" onclick="showBookmark(${bookmarks.length - 1 - index})">
+                        <strong>Q:</strong> ${b.question.substring(0, 40)}...<br>
+                        <div class="bookmark-time">${b.time}</div>
+                    </div>
+                `).join('');
+            }
+            updateBookmarkCount();
+        }
+        
+        function addBookmark(question, answer) {
+            const newBookmark = {
+                question: question,
+                answer: answer,
+                time: new Date().toLocaleString('bn-BD')
+            };
+            bookmarks.push(newBookmark);
+            localStorage.setItem('teacher24_bookmarks', JSON.stringify(bookmarks));
+            updateBookmarkList();
+        }
+        
+        window.showBookmark = function(index) {
+            const b = bookmarks[index];
+            blackboard.innerText = `📌 Saved Question:\n${b.question}\n\n📖 Answer:\n${b.answer}`;
+            bookmarkPanel.classList.remove('active');
+        };
+        
+        window.clearAllBookmarks = function() {
+            if (confirm('Are you sure you want to clear all bookmarks?')) {
+                bookmarks = [];
+                localStorage.setItem('teacher24_bookmarks', JSON.stringify(bookmarks));
+                updateBookmarkList();
+            }
+        };
+        
+        window.logout = function() {
+            location.reload();
+        };
+
+        // বুকমার্ক টগল
+        const bookmarkBtn = document.getElementById('bookmarkBtn');
+        const bookmarkPanel = document.getElementById('bookmarkPanel');
+
+        bookmarkBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            bookmarkPanel.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!bookmarkPanel.contains(e.target) && !bookmarkBtn.contains(e.target)) {
+                bookmarkPanel.classList.remove('active');
+            }
+        });
+
+        // ক্যামেরা
+        const cameraBtn = document.getElementById('cameraBtn');
+        const cameraOptions = document.getElementById('cameraOptions');
+        const cameraModal = document.getElementById('cameraModal');
+        const video = document.getElementById('video');
+        const fileInput = document.getElementById('fileInput');
+        
+        let stream = null;
+        let currentFacingMode = 'environment';
+        let capturedImageBase64 = null;
+
+        cameraBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            cameraOptions.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            cameraOptions.classList.remove('active');
+        });
+
+        window.openGallery = function() {
+            cameraOptions.classList.remove('active');
+            fileInput.click();
+        };
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    capturedImageBase64 = event.target.result;
+                    previewImg.src = capturedImageBase64;
+                    imagePreview.style.display = 'flex';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        window.openCamera = async function() {
+            cameraOptions.classList.remove('active');
+            try {
+                if (stream) stream.getTracks().forEach(track => track.stop());
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: currentFacingMode } 
+                });
+                video.srcObject = stream;
+                cameraModal.classList.add('active');
+                blackboard.classList.add('blurred');
+            } catch (err) {
+                console.log("Camera access denied");
+            }
+        };
+
+        window.switchCamera = async function() {
+            currentFacingMode = currentFacingMode === 'environment' ? 'user' : 'environment';
+            if (stream) stream.getTracks().forEach(track => track.stop());
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: currentFacingMode } 
+                });
+                video.srcObject = stream;
+            } catch (err) {
+                console.log("Cannot switch camera");
+            }
+        };
+
+        window.captureImage = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            capturedImageBase64 = canvas.toDataURL('image/jpeg', 0.9);
+            
+            previewImg.src = capturedImageBase64;
+            imagePreview.style.display = 'flex';
+            
+            closeCameraModal();
+        };
+
+        window.closeCameraModal = function() {
+            if (stream) stream.getTracks().forEach(track => track.stop());
+            cameraModal.classList.remove('active');
+            blackboard.classList.remove('blurred');
+        };
+
+        window.removeImage = function() {
+            capturedImageBase64 = null;
+            imagePreview.style.display = 'none';
+            previewImg.src = '';
+        };
+
+        // ডিজিটাল ঘড়ি
+        function updateClock() {
+            const now = new Date();
+            
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const timeStr = `${hours.toString().padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+            
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            const dayName = days[now.getDay()];
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            const dateStr = `${dayName}, ${day} ${month} ${year}`;
+            
+            document.getElementById('clockTime').innerText = timeStr;
+            document.getElementById('clockDate').innerText = dateStr;
+        }
+        
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // মেনু
+        const menuBtn = document.getElementById('menuBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', () => {
+            dropdownMenu.classList.remove('active');
+        });
+
+        // ক্যালকুলেটর
+        const calculatorModal = document.getElementById('calculatorModal');
+        const calcDisplay = document.getElementById('calcDisplay');
+        let currentCalc = '0';
+        
+        document.getElementById('calculatorIcon').addEventListener('click', () => {
+            calculatorModal.classList.add('active');
+            blackboard.classList.add('blurred');
+        });
+        
+        window.closeCalculator = function() {
+            calculatorModal.classList.remove('active');
+            blackboard.classList.remove('blurred');
+        };
+        
+        window.appendToCalc = function(value) {
+            if (currentCalc === '0' && value !== '.') {
+                currentCalc = value;
+            } else {
+                currentCalc += value;
+            }
+            calcDisplay.innerText = currentCalc;
+        };
+        
+        window.clearCalc = function() {
+            currentCalc = '0';
+            calcDisplay.innerText = currentCalc;
+        };
+        
+        window.calculateResult = function() {
+            try {
+                const result = Function('"use strict";return (' + currentCalc + ')')();
+                currentCalc = result.toString();
+                calcDisplay.innerText = currentCalc;
+            } catch (e) {
+                calcDisplay.innerText = 'Error';
+                currentCalc = '0';
+            }
+        };
+
+        // প্রশ্ন
+        askBtn.addEventListener('click', handleQuestion);
+        questionInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleQuestion();
+        });
+
+        async function handleQuestion() {
+            const question = questionInput.value.trim();
+            
+            if (!question && !capturedImageBase64) {
+                return;
+            }
+
+            blackboard.innerText = "🤔 Teacher 24 is thinking...";
+            
+            try {
+                let requestBody;
+                
+                if (capturedImageBase64) {
+                    requestBody = {
+                        model: "llama-3.2-11b-vision-preview",
+                        messages: [
+                            {
+                                role: "user",
+                                content: [
+                                    {
+                                        type: "text",
+                                        text: question || "What do you see in this image? Answer in Bengali."
+                                    },
+                                    {
+                                        type: "image_url",
+                                        image_url: {
+                                            url: capturedImageBase64
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1024
+                    };
+                } else {
+                    requestBody = {
+                        model: "llama-3.3-70b-versatile",
+                        messages: [
+                            { role: "system", content: "You are a teacher named Teacher Twenty Four. Always answer in Bengali." },
+                            { role: "user", content: question }
+                        ],
+                        temperature: 0.7,
+                        max_tokens: 1024
+                    };
+                }
+
+                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${GROQ_API_KEY}`
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                const data = await response.json();
+                
+                if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                    const answer = data.choices[0].message.content;
+                    
+                    blackboard.innerText = answer;
+                    
+                    if (question) addBookmark(question, answer);
+                    
+                    const utterance = new SpeechSynthesisUtterance(answer);
+                    utterance.lang = 'bn-BD';
+                    utterance.rate = 1.2;
+                    utterance.pitch = 1;
+                    
+                    window.speechSynthesis.cancel();
+                    window.speechSynthesis.speak(utterance);
+                    
+                    questionInput.value = '';
+                    if (capturedImageBase64) removeImage();
+                    
+                } else {
+                    blackboard.innerText = "❌ No answer found";
+                }
+
+            } catch (error) {
+                console.error("Error:", error);
+                blackboard.innerText = "❌ Network Error";
+            }
+        }
+
+        // ভয়েস
+        let recognition = null;
+        
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.lang = 'bn-BD';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            recognition.onstart = () => {
+                voiceInputBtn.classList.add('listening');
+            };
+            
+            recognition.onend = () => {
+                voiceInputBtn.classList.remove('listening');
+            };
+            
+            recognition.onresult = (event) => {
+                const text = event.results[0][0].transcript;
+                questionInput.value = text;
+                setTimeout(handleQuestion, 100);
+            };
+            
+            recognition.onerror = () => {
+                voiceInputBtn.classList.remove('listening');
+            };
+        }
+        
+        voiceInputBtn.addEventListener('click', () => {
+            if (recognition) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.log("Microphone error");
+                }
+            }
+        });
+
+        // শুরু
+        updateBookmarkList();
+    </script>
+</body>
+</html>
